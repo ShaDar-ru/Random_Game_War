@@ -1,0 +1,16 @@
+language: java
+
+jdk:
+  - openjdk16
+
+sudo: false
+
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
+
+notifications:
+  email:
+    recipients:
+      - alexterentev90@gmail.com
+    on_success: never # default: change
+    on_failure: never # default: always
