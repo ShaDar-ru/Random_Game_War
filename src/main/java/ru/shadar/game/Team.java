@@ -1,44 +1,32 @@
 package ru.shadar.game;
 
 public class Team {
+
     private Army allTeamUnits = new Army();
     private Army regularUnits = new Army();
     private Army buffedUnits = new Army();
     private Army unitsCanMove = new Army();
 
-    /**
-     * Генерация команды. Заполняет массив army и дублирует ссылки из него в units
-     *
-     * @param race тип расы
-     */
     protected Team(Race race) {
         this.createUnitsInAllUnits(race);
         this.createRegularUnits();
     }
 
-    /**
-     * Генерация стандартной армии в 8 юнитов.
-     *
-     * @param race - раса юнитов. Нужна для генерации отдельных Юнитов
-     */
     private void createUnitsInAllUnits(Race race) {
         int a = allTeamUnits.getUnitsSize();
         for (int i = 0; i < allTeamUnits.getUnits().length; i++) {
-            switch (i) {
-                case 0 -> {
-                    Unit unit = new Unit(race, new Mage(race));
-                    allTeamUnits.getUnits()[i] = unit;
-                    allTeamUnits.setUnitsSize(++a);
-                }
-                case 1, 2, 3 -> {
-                    allTeamUnits.getUnits()[i] = new Unit(race, new Archer(race));
-                    allTeamUnits.setUnitsSize(++a);
-                }
-                case 4, 5, 6, 7 -> {
-                    allTeamUnits.getUnits()[i] = new Unit(race, new Warrior(race));
-                    allTeamUnits.setUnitsSize(++a);
-                }
-                default -> allTeamUnits.getUnits()[i] = null;
+            if (i == 0) {
+                Unit unit = new Unit(race, new Mage(race));
+                allTeamUnits.getUnits()[i] = unit;
+                allTeamUnits.setUnitsSize(++a);
+            }
+            if (i >= 1 && i <= 3) {
+                allTeamUnits.getUnits()[i] = new Unit(race, new Archer(race));
+                allTeamUnits.setUnitsSize(++a);
+            }
+            if (i >= 4 && i <= 7) {
+                allTeamUnits.getUnits()[i] = new Unit(race, new Warrior(race));
+                allTeamUnits.setUnitsSize(++a);
             }
         }
     }
@@ -99,7 +87,6 @@ public class Team {
         return this.allTeamUnits.getRandomUnit();
     }
 
-    //!!!
     protected void setTeamActive() {
         for (int i = 0; i < this.allTeamUnits.getUnitsSize(); i++) {
             allTeamUnits.getUnit(i).setActive(true);
@@ -194,11 +181,7 @@ public class Team {
     }
 
     protected boolean isAlive() {
-        boolean rsl = true;
-        if (allTeamUnits.getUnitsSize() <= 0) {
-            rsl = false;
-        }
-        return rsl;
+        return allTeamUnits.getUnitsSize() > 0;
     }
 
     @Override
